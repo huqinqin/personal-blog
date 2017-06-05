@@ -21,3 +21,152 @@
  5. 配置Gruntfile.js
 　　顾名思义，Gruntfile.js 这个文件，肯定是为了grunt做某种配置的。按照grunt的规定，我们首先把Gruntfile.js配置成如下格式。
    详情请参考网址：http://blog.csdn.net/wangfupeng1988/article/details/46418203/   (这个网址的内容写的很好也很详细)
+   
+   
+  gruntfile.js 的配置
+module.exports=function(grunt){
+	//任务配置，所有插件的配置信息
+	/*grunt.initConfig({
+		//获取package.json的信息
+		pkg:grunt.file.readJSON('package.json'),
+		uglify:{
+			options:{
+				stripBanners:true;
+				banner: '/!*!<%=pkg.name%>-<%=pkg.version%>.js <%=grunt.template.today("yyyy-mm-dd")%>*!/ \n'
+			},
+			build:{
+				src:'src/test.js',
+				dest:'build/<%=pkg.name%>-<%=pkg.version%>.js.min.js',
+			}
+		}
+	});*/
+
+
+	/*grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
+		uglify: {
+			options: {
+				banner: '/!*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+				'<%= grunt.template.today("yyyy-mm-dd") %> *!/'
+			},
+			my_target: {
+				files: {
+					'dest/test.min.js': ['src/test.js']
+				}
+			}
+		}
+	});*/
+
+
+
+	/*grunt.initConfig({
+	 pkg: grunt.file.readJSON('package.json'),
+		uglify: {
+			options: {
+				compress: {
+					global_defs: {
+						'DEBUG': false
+					},
+					dead_code: true
+				}
+			},
+			my_target: {
+				files: {
+					'dest/test.min.js': ['src/test1.js']
+				}
+			}
+		}
+	});*/
+
+	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
+
+
+		uglify: {
+			options: {
+				mangle: false
+			},
+			my_target: {
+				files: {
+					'dest/output.min.js': ['js/angular-double.js']
+				}
+			}
+		},
+
+		jshint: {
+			options: {
+				/*"bitwise": true,
+				"curly": false,
+				"eqeqeq": false,
+				"es3": true,
+				"freeze": true,
+				"funcscrop": true,
+				"futurehostile": true,
+				"latedef": true,
+				"noarg": true,
+				"nonbsp": true,
+				"notypeof": true,
+				"undef": true,
+				"unused": true,
+				"asi": true,
+				"eqnull": true,
+				"evil": true,
+				"loopfunc": true,
+				"plusplus": false,
+				"validthis": true,
+				"withstmt": true,
+				"browser": true,
+				"jquery": true,
+				"strict":false,*/
+				"globals": {
+					"angular"   : false,
+					"jasmine"   : false,
+					"$"         : false,
+					"_"         : false,
+					"module"    : false,
+					"require"   : false,
+					"console":false
+				}
+
+			},
+			//具体任务配置
+			files: {
+				src: ['js/angular-double.js']
+			}
+		},
+
+		watch: {
+			scripts: {
+				files: ['src/angular-double.js'],
+				tasks: ['jshint'],
+				options: {
+					spawn: false,
+				},
+			},
+		},
+	});
+
+
+
+
+
+
+	//告诉grunt当我们在终端输入grunt时需要做些什么（注意先后顺序）
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+/*
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+*/
+	/*grunt.registerTask('default',[]);*/
+	// 加载指定插件任务
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+
+	// 默认执行的任务
+/*
+	grunt.registerTask('default', ['uglify']);
+*/
+	grunt.registerTask('default', ['jshint','uglify','watch']);
+/*	grunt.registerTask('default', ['watch']);*/
+
+/*	grunt.registerTask('default',['uglify']);*/
+};
